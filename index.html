@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PulseGrid — Real-Time Infrastructure Monitoring</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="pulse-dot"></span>
+    <h1>PulseGrid</h1>
+    <span class="tagline">Real-time infrastructure monitoring &amp; anomaly detection</span>
+  </div>
+  <div class="conn-status">
+    <span id="wsStatusDot" class="dot dot-red"></span>
+    <span id="wsStatusText">Connecting…</span>
+  </div>
+</header>
+
+<section class="overview">
+  <div class="card"><div class="card-label">Events / sec</div><div class="card-value" id="statEventsPerSec">0</div></div>
+  <div class="card"><div class="card-label">Total Events</div><div class="card-value" id="statTotalEvents">0</div></div>
+  <div class="card"><div class="card-label">Active Sources</div><div class="card-value" id="statActiveSources">0</div></div>
+  <div class="card"><div class="card-label">Errors (60s)</div><div class="card-value" id="statErrors">0</div></div>
+  <div class="card"><div class="card-label">Anomalies</div><div class="card-value" id="statAnomalies">0</div></div>
+  <div class="card"><div class="card-label">System Status</div><div class="card-value" id="statSystemStatus">—</div></div>
+</section>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="live">Live Stream</button>
+  <button class="tab-btn" data-tab="metrics">Metrics</button>
+  <button class="tab-btn" data-tab="anomalies">Anomalies</button>
+  <button class="tab-btn" data-tab="history">Historical Analytics</button>
+</nav>
+
+<main>
+  <section id="tab-live" class="tab-panel active">
+    <h2>Live Event Stream</h2>
+    <div class="table-wrap">
+      <table id="liveTable">
+        <thead><tr><th>Time</th><th>Source</th><th>Instance</th><th>Status</th><th>CPU%</th><th>Mem%</th><th>Latency ms</th><th>Err%</th><th>RPS</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="tab-metrics" class="tab-panel">
+    <h2>Metrics</h2>
+    <div class="charts-grid">
+      <div class="chart-box"><canvas id="chartRate"></canvas></div>
+      <div class="chart-box"><canvas id="chartLatency"></canvas></div>
+      <div class="chart-box"><canvas id="chartCpuMem"></canvas></div>
+      <div class="chart-box"><canvas id="chartErrors"></canvas></div>
+    </div>
+  </section>
+
+  <section id="tab-anomalies" class="tab-panel">
+    <h2>Detected Anomalies</h2>
+    <div class="table-wrap">
+      <table id="anomalyTable">
+        <thead><tr><th>Time</th><th>Severity</th><th>Source</th><th>Instance</th><th>Metric</th><th>Value</th><th>Reason</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="tab-history" class="tab-panel">
+    <h2>Historical Analytics</h2>
+    <p class="hint">Aggregated window history pulled from <code>/api/aggregates</code>. Refresh to reload.</p>
+    <button id="refreshHistory">Refresh</button>
+    <div class="table-wrap">
+      <table id="historyTable">
+        <thead><tr><th>Window Start</th><th>Source</th><th>Events</th><th>Avg CPU</th><th>Avg Mem</th><th>Avg Latency</th><th>Avg Err</th><th>Anomalies</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>PulseGrid — Redis Streams · FastAPI · SQLite · WebSockets</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
