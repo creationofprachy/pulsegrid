@@ -244,7 +244,4 @@ Pluggable detection backend (Isolation Forest / seasonal decomposition) behind t
 Horizontal scaling validation: multiple `StreamProcessor` instances in the same consumer group under real load.
 Alerting integration (webhook/Slack) triggered directly off the `pulsegrid:updates` pub/sub channel.
 Swap SQLite for PostgreSQL behind the same `Database` interface for multi-writer deployments.
-License
-MIT — see LICENSE.
-Author
-Aninda Nath
+
